@@ -1,0 +1,47 @@
+{
+  "name": "veronica-kurteva-site",
+  "version": "1.0.0",
+  "description": "Veronica Kurteva - .NET developer and cognitive science student",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "build:docx": "tsx scripts/generate-cv-docx.ts",
+    "build:pdf": "node scripts/generate-cv-pdf.mjs",
+    "build:all": "npm run build && npm run build:docx && npm run build:pdf",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "playwright test",
+    "verify": "npm run format:check && npm run lint && npm run check && npm run build:all && npm test"
+  },
+  "author": "Veronica Kurteva",
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/sitemap": "^3.7.3",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
+    "astro": "^7.3.2",
+    "docx": "^9.7.1",
+    "eslint": "^10.10.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^3.1.0",
+    "globals": "^17.9.0",
+    "playwright": "^1.63.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^1.1.1",
+    "tsx": "^4.23.12",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.66.0"
+  },
+  "dependencies": {
+    "@fontsource/lora": "^5.2.8",
+    "@fontsource/source-sans-3": "^5.2.8"
+  },
+  "private": true
+}

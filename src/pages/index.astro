@@ -1,0 +1,253 @@
+---
+import { existsSync } from 'node:fs';
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import { site } from '../data/site';
+import { interests, roles, skills } from '../data/cv';
+import {
+  companySpan,
+  earlier,
+  firstYear,
+  presentMonth,
+  studyItems,
+  timeline,
+  totalMonths,
+  workLanes,
+  years,
+} from '../data/timeline';
+const hasPortrait = existsSync('public/images/veronica.webp');
+const recentRoles = roles.slice(0, 3).map((role) => ({
+  ...role,
+  ...companySpan(role),
+  title:
+    role.positions.length > 1
+      ? `${role.positions.at(-1)!.title}, then ${role.positions[0].title}`
+      : role.positions[0].title,
+}));
+// Labels near the right edge hang leftwards so they stay inside the column.
+const anchorEnd = (start: number) => start > totalMonths - 28;
+// One sentence for everything that ended before the chart begins.
+const earlierParts = earlier.map((item) =>
+  item.row === 'work'
+    ? `${item.title.toLowerCase()} at ${item.org} (${item.period})`
+    : `a ${item.title.replace('’s degree, ', '’s in ')} (${item.period})`,
+);
+const earlierSentence =
+  earlierParts.length > 1
+    ? `${earlierParts.slice(0, -1).join(', ')} and ${earlierParts.at(-1)}`
+    : earlierParts.join('');
+---
+
+<Base>
+  <section
+    class:list={['hero', 'wrap', { 'hero-with-portrait': hasPortrait }]}
+    aria-labelledby="intro-title"
+  >
+    <div class="hero-copy">
+      <h1 id="intro-title">
+        <span class="hero-line">I build .NET backends.</span>
+        <em class="hero-line">I study how people think.</em>
+      </h1>
+    </div>
+    <div class="hero-side">
+      <p class="hero-intro">
+        I’m Veronica, a developer at EGT Digital in Sofia, working with C# and .NET. Alongside that
+        I’m doing a master’s in cognitive science, because the people who use software interest me
+        as much as the software does.
+      </p>
+      <div class="hero-actions">
+        <a class="button" href={`mailto:${site.email}`}>
+          Email me <Arrow direction="out" />
+        </a>
+        <a class="text-link" href="/cv/">
+          Read my CV <Arrow />
+        </a>
+      </div>
+    </div>
+    {hasPortrait && (
+      <figure class="portrait">
+        <img
+          src="/images/veronica.webp"
+          alt="Veronica Kurteva"
+          width="640"
+          height="800"
+          fetchpriority="high"
+        />
+      </figure>
+    )}
+  </section>
+
+  <section class="about-section" aria-labelledby="about-title">
+    <div class="wrap section-grid">
+      <h2 id="about-title">
+        I’ve worked on factory floors, in data centres and{' '}
+        <em>with people living with dementia.</em>
+      </h2>
+      <div class="prose">
+        <p>
+          My work has taken me from data centre infrastructure and industrial software to backend
+          development with .NET. Along the way, I’ve worked on APIs, database logic and bringing
+          older applications into ASP.NET Core. Today I build backend services for EGT Digital’s
+          gaming platform, owning features from design through to release.
+        </p>
+        <p>
+          My curiosity also led me to psychology. After a bachelor’s degree in Cognitive Science and
+          Psychology, I spent eight months as a psychologist intern at a rehabilitation hospital,
+          supporting art therapy sessions. In 2025 I began a master’s in Cognitive Science at New
+          Bulgarian University.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section-space" aria-labelledby="timeline-title">
+    <div class="section-heading">
+      <h2 id="timeline-title">
+        Where code and
+        <br />
+        <em>cognition</em> overlap.
+      </h2>
+      <p class="section-note">
+        <span class="swatch swatch-cognition"></span> Terracotta marks the psychology.
+      </p>
+    </div>
+    <ol
+      class="timeline"
+      style={`--months: ${totalMonths}`}
+      aria-label="Work and study, 2014 to today"
+    >
+      {workLanes.map((item) => (
+        <li
+          class:list={[
+            'tl-item',
+            `tl-${item.track}`,
+            `tl-${item.lane}`,
+            { 'tl-end': anchorEnd(item.start), 'tl-ongoing': item.ongoing },
+          ]}
+          style={`--s: ${item.start + 1}; --e: ${item.end + 1}`}
+        >
+          <span class="tl-bar" aria-hidden="true" />
+          <span class="tl-label">
+            <strong>{item.org}</strong>
+            <span>{item.title}</span>
+          </span>
+          <span class="tl-period">{item.period}</span>
+        </li>
+      ))}
+      <li class="tl-caption tl-caption-work" aria-hidden="true">
+        work
+      </li>
+      <li class="tl-caption tl-caption-study" aria-hidden="true">
+        study
+      </li>
+      <li class="tl-axis" style={`--n: ${presentMonth + 1}`} aria-hidden="true">
+        {years.map((year) => (
+          <span>{year}</span>
+        ))}
+      </li>
+      <li class="tl-now" style={`--n: ${presentMonth + 1}`} aria-hidden="true"></li>
+      {studyItems.map((item) => (
+        <li
+          class:list={[
+            'tl-item',
+            'tl-study',
+            `tl-${item.track}`,
+            { 'tl-end': anchorEnd(item.start), 'tl-ongoing': item.ongoing },
+          ]}
+          style={`--s: ${item.start + 1}; --e: ${item.end + 1}`}
+        >
+          <span class="tl-bar" aria-hidden="true" />
+          <span class="tl-label">
+            <strong>{item.title}</strong>
+            <span>{item.org}</span>
+          </span>
+          <span class="tl-period">{item.period}</span>
+        </li>
+      ))}
+    </ol>
+    <ol class="timeline-list" aria-label="Work and study, newest first">
+      {timeline.map((item) => (
+        <li class:list={['tl-row', `tl-${item.track}`]}>
+          <span class="tl-period">{item.period}</span>
+          <span class="tl-label">
+            <strong>{item.row === 'work' ? item.org : item.title}</strong>
+            <span>{item.row === 'work' ? item.title : item.org}</span>
+            {item.summary && <span class="tl-summary">{item.summary}</span>}
+          </span>
+        </li>
+      ))}
+    </ol>
+    <p class="timeline-earlier">
+      Before {firstYear}: {earlierSentence}. The <a href="/cv/">CV</a> has the detail.
+    </p>
+  </section>
+
+  <section class="wrap section-space experience" aria-labelledby="experience-title">
+    <div class="section-heading">
+      <h2 id="experience-title">Recent work.</h2>
+      <a class="text-link" href="/cv/#experience">
+        Full CV <Arrow />
+      </a>
+    </div>
+    <div class="experience-list">
+      {recentRoles.map((role) => (
+        <article class="experience-row">
+          <p class="experience-date">{role.period}</p>
+          <div>
+            <h3>{role.company}</h3>
+            <p class="role-title">{role.title}</p>
+          </div>
+          {role.summary && <p class="experience-description">{role.summary}</p>}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap section-space expertise" aria-labelledby="skills-title">
+    <h2 id="skills-title">The tools behind the work.</h2>
+    <dl class="skills-grid">
+      {skills.map((group) => (
+        <div class="skill-group">
+          <dt>{group.group}</dt>
+          <dd>{group.items.join(', ')}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="aside-contact">
+      Want the detail? <a href="/cv/">The CV has it</a>, or{' '}
+      <a href={`mailto:${site.email}`}>email me</a>.
+    </p>
+  </section>
+
+  <section class="wrap beyond section-grid" aria-labelledby="beyond-title">
+    <h2 id="beyond-title">Away from the keyboard.</h2>
+    <div>
+      <p class="beyond-copy">
+        A mountain trail, somewhere new to explore, or a swing dance floor. There’s plenty to be
+        curious about away from a screen.
+      </p>
+      <ul class="interests">
+        {interests.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="contact-section" aria-labelledby="contact-title">
+    <div class="wrap contact-inner">
+      <h2 id="contact-title">
+        If you’d like to talk,
+        <br />
+        write to me.
+      </h2>
+      <a class="contact-email" href={`mailto:${site.email}`}>
+        {site.email} <Arrow direction="out" />
+      </a>
+      <p class="contact-note">
+        My <a href={site.linkedin}>LinkedIn</a> address still carries my previous surname, Kolarska.
+        Same person.
+      </p>
+    </div>
+  </section>
+</Base>

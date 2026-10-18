@@ -1,0 +1,82 @@
+---
+import '@fontsource/lora/latin-400.css';
+import '@fontsource/lora/latin-400-italic.css';
+import '@fontsource/source-sans-3/latin-400.css';
+import '@fontsource/source-sans-3/latin-600.css';
+import '../styles/global.css';
+import Arrow from '../components/Arrow.astro';
+import { site } from '../data/site';
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = `${site.name} - ${site.role}`, description = site.description } = Astro.props;
+const isCV = Astro.url.pathname.startsWith('/cv');
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+// Social previews need an absolute URL, so they wait for SITE_URL like the canonical does.
+const ogImage = Astro.site ? new URL('/images/og.jpg', Astro.site).href : undefined;
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  email: `mailto:${site.email}`,
+  sameAs: [site.linkedin],
+  homeLocation: { '@type': 'City', name: 'Sofia' },
+  worksFor: { '@type': 'Organization', name: 'EGT Digital' },
+  ...(Astro.site ? { url: Astro.site.href } : {}),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f7f4ee" />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="630" />}
+    {ogImage && <meta name="twitter:card" content="summary_large_image" />}
+    <script type="application/ld+json" set:html={JSON.stringify(person).replace(/</g, '\\u003c')} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <header class="site-header wrap">
+      <a class="wordmark" href="/" aria-label="Veronica Kurteva - home">
+        Veronica Kurteva<span class="wordmark-dot">.</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="/cv/" aria-current={isCV ? 'page' : undefined}>
+          CV
+        </a>
+        <a class="nav-contact" href={`mailto:${site.email}`}>
+          Email me <Arrow direction="out" />
+        </a>
+      </nav>
+    </header>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="site-footer wrap">
+      <p>
+        Veronica Kurteva <span aria-hidden="true">·</span> Sofia, Bulgaria
+      </p>
+      <a href={site.linkedin}>
+        LinkedIn <Arrow direction="out" />
+      </a>
+    </footer>
+  </body>
+</html>

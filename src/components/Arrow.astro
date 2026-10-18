@@ -1,0 +1,27 @@
+---
+// One drawn arrow, one stroke weight, used wherever a link points somewhere.
+interface Props {
+  direction?: 'right' | 'down' | 'out';
+}
+const { direction = 'right' } = Astro.props;
+const paths = {
+  right: 'M3 8h10M9 4l4 4-4 4',
+  down: 'M8 3v10M4 9l4 4 4-4',
+  out: 'M4 12 12 4M6 4h6v6',
+};
+---
+
+<svg
+  class="arrow"
+  width="16"
+  height="16"
+  viewBox="0 0 16 16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <path d={paths[direction]}></path>
+</svg>

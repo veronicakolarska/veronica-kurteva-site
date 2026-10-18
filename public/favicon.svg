@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The timeline mark: code above the line, cognition below it, overlapping in the middle. -->
+  <rect width="64" height="64" rx="14" fill="#f7f4ee"/>
+  <rect x="11" y="21" width="30" height="7" rx="3.5" fill="#262b29"/>
+  <path d="M9 32.5h46" stroke="#bdb2a4" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="25" y="37" width="30" height="7" rx="3.5" fill="#96513b"/>
+</svg>
