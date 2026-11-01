@@ -96,6 +96,10 @@ test('downloads are real files and the CV print layout is complete', async ({ pa
     const data = await response.body();
     expect(data.subarray(0, signature.length).toString()).toBe(signature);
     expect(data.length).toBeGreaterThan(5000);
+    if (extension === 'pdf') {
+      const pages = data.toString('latin1').match(/\/Type\s*\/Page(?!s)/g) ?? [];
+      expect(pages.length).toBeLessThanOrEqual(2);
+    }
   }
   await page.emulateMedia({ media: 'print' });
   await expect(page.locator('.site-header')).toBeHidden();

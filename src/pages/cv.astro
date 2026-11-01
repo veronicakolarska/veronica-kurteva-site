@@ -12,6 +12,9 @@ import {
   interests,
 } from '../data/cv';
 import { cvFileBase } from '../data/cv-filename.mjs';
+import { existsSync } from 'node:fs';
+
+const hasPortrait = existsSync('public/images/veronica.webp');
 ---
 
 <Base title={`Curriculum vitae - ${site.name}`}>
@@ -26,16 +29,27 @@ import { cvFileBase } from '../data/cv-filename.mjs';
         </a>
       </div>
     </div>
-    <header class="cv-header">
-      <h1>{site.name}</h1>
-      <p class="cv-role">{site.role}</p>
-      <p class="cv-contact">
-        {site.location}
-        <span aria-hidden="true"> · </span>
-        <a href={`mailto:${site.email}`}>{site.email}</a>
-        <span aria-hidden="true"> · </span>
-        <a href={site.linkedin}>LinkedIn</a>
-      </p>
+    <header class:list={['cv-header', { 'cv-header-with-photo': hasPortrait }]}>
+      {hasPortrait && (
+        <img
+          class="cv-photo"
+          src="/images/veronica-400.webp"
+          alt="Veronica Kurteva"
+          width="400"
+          height="400"
+        />
+      )}
+      <div class="cv-identity">
+        <h1>{site.name}</h1>
+        <p class="cv-role">{site.role}</p>
+        <p class="cv-contact">
+          {site.location}
+          <span aria-hidden="true"> · </span>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <span aria-hidden="true"> · </span>
+          <a href={site.linkedin}>LinkedIn</a>
+        </p>
+      </div>
       <p class="cv-summary">{summary}</p>
     </header>
     <section class="cv-section" id="experience" aria-labelledby="cv-experience">

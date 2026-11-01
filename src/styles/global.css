@@ -593,6 +593,39 @@
     gap: 24px;
     align-items: center;
   }
+  /* The photo fills the right of the header, centred on the name and summary. */
+  .cv-header-with-photo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'identity photo'
+      'summary photo';
+    column-gap: 48px;
+  }
+  .cv-header-with-photo .cv-photo {
+    align-self: center;
+  }
+  .cv-identity {
+    grid-area: identity;
+  }
+  .cv-header-with-photo .cv-summary {
+    grid-area: summary;
+    margin-bottom: 0;
+  }
+  /* Space below the summary sits outside the grid so the photo centres on
+     the text itself. */
+  .cv-header-with-photo {
+    padding-bottom: 40px;
+  }
+  .cv-photo {
+    grid-area: photo;
+    width: clamp(180px, 22vw, 260px);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--paper-warm);
+  }
   .cv-role {
     margin-top: 12px;
     font-size: 1.5rem;
@@ -1070,6 +1103,17 @@
     .cv-header h1 {
       font-size: 2.5rem;
     }
+    .cv-header-with-photo {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'photo'
+        'identity'
+        'summary';
+    }
+    .cv-photo {
+      width: 128px;
+      margin-bottom: 20px;
+    }
     .cv-section {
       grid-template-columns: 1fr;
       gap: 18px;
@@ -1189,9 +1233,43 @@
     .cv-employer + .cv-employer {
       margin-top: 8pt;
     }
+    /* Title and dates share one line; an A4 page is narrow enough to
+       otherwise pick up the phone layout, which stacks them. */
     .cv-entry-title {
+      display: flex;
       margin-top: 3pt;
       break-after: avoid;
+    }
+    .cv-entry-title p {
+      margin-top: 0;
+    }
+    /* The photo is centred in the space beside the name and summary, so it
+       adds no height and the PDF stays at two pages. */
+    .cv-header-with-photo {
+      grid-template-columns: minmax(0, 1fr) 62mm;
+      grid-template-areas:
+        'identity photo'
+        'summary photo';
+      column-gap: 0;
+      padding-bottom: 0;
+    }
+    .cv-header-with-photo .cv-photo {
+      justify-self: center;
+    }
+    .cv-photo {
+      width: 38mm;
+      margin-bottom: 0;
+    }
+    /* Smaller technology bubbles keep the PDF to two pages. */
+    .tech-labels {
+      gap: 3pt;
+      margin-top: 4pt;
+    }
+    .tech-labels li,
+    .cv-position .tech-labels li {
+      padding: 0 6pt;
+      font-size: 8pt;
+      line-height: 1.45;
     }
     .cv-entry-title h4,
     .cv-education h3 {
@@ -1215,9 +1293,19 @@
     .cv-skills div + div {
       margin-top: 5pt;
     }
-    .cv-position,
+    /* A job may split between bullets so pages fill; a bullet never splits,
+       and the technology bubbles stay with the last bullet. */
+    .cv-position li,
     .cv-education,
     .cv-skills > div {
+      break-inside: avoid;
+    }
+    .cv-position ul:has(+ .tech-labels),
+    .cv-position ul:has(+ .tech-labels) li:last-child {
+      break-after: avoid;
+    }
+    .tech-labels {
+      break-before: avoid;
       break-inside: avoid;
     }
     p,
