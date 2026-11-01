@@ -16,6 +16,10 @@ export interface Education {
   degree: string;
   school: string;
   period: string;
+  /** Short homepage points, from the LinkedIn education entries. */
+  highlights?: string[];
+  /** Subjects shown as labels on the homepage. */
+  topics?: string[];
 }
 
 export const summary =
@@ -193,16 +197,30 @@ export const education: Education[] = [
     degree: 'Master’s degree, Cognitive Science',
     school: 'New Bulgarian University',
     period: 'Oct 2025 - Present',
+    highlights: [
+      'Studying cognition, learning and decision-making.',
+      'Research on how people judge what AI can do and how far to rely on it.',
+    ],
+    topics: ['Cognition', 'Learning', 'Decision-making', 'Human–AI collaboration'],
   },
   {
     degree: 'Bachelor’s degree, Cognitive Science and Psychology',
     school: 'New Bulgarian University',
     period: '2021 - 2025',
+    highlights: [
+      'Studied for this degree while working full time as a software developer.',
+      'Learned the fundamentals of psychology, including cognitive and clinical psychology.',
+    ],
+    topics: ['Psychology', 'Clinical psychology'],
   },
   {
     degree: 'Bachelor’s degree, Computer Science',
     school: 'New Bulgarian University',
     period: '2014 - 2018',
+    highlights: [
+      'Built a foundation in programming, algorithms, data structures, databases and software engineering.',
+    ],
+    topics: ['Programming', 'Algorithms', 'Data structures', 'Databases', 'Software engineering'],
   },
 ];
 

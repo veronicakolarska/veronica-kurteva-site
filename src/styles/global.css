@@ -221,7 +221,8 @@
     background: var(--paper-2);
     padding-block: 80px;
   }
-  .experience {
+  .experience,
+  .education {
     padding-top: 0;
   }
   .beyond {
@@ -1007,7 +1008,8 @@
     .contact-inner {
       padding-block: 56px;
     }
-    .experience {
+    .experience,
+    .education {
       padding-top: 0;
     }
     .section-heading {

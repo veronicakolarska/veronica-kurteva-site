@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import Base from '../layouts/Base.astro';
 import Arrow from '../components/Arrow.astro';
 import { site } from '../data/site';
-import { interests, roles } from '../data/cv';
+import { education, interests, roles } from '../data/cv';
 import {
   companySpan,
   earlier,
@@ -51,9 +51,9 @@ const earlierSentence =
     </div>
     <div class="hero-side">
       <p class="hero-intro">
-        I’m Veronica, a developer at EGT Digital in Sofia, working with C# and .NET. Alongside that
-        I’m doing a master’s in cognitive science, because the people who use software interest me
-        as much as the software does.
+        I’m Veronica, a backend developer at EGT Digital in Sofia, building microservices on the
+        .NET stack. Alongside that I’m doing a master’s in cognitive science, exploring human–AI
+        collaboration, something I see firsthand in my daily work.
       </p>
       <div class="hero-actions">
         <a class="button" href={`mailto:${site.email}`}>
@@ -228,6 +228,39 @@ const earlierSentence =
               <ul class="tech-labels" aria-label="Technologies">
                 {role.tech.map((item) => (
                   <li>{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap section-space education" aria-labelledby="education-title">
+    <div class="section-heading">
+      <h2 id="education-title">Education.</h2>
+    </div>
+    <div class="experience-list">
+      {education.map((item) => (
+        <article class="experience-row">
+          <div class="experience-meta">
+            <h3>{item.degree}</h3>
+            <p class="role-title">{item.school}</p>
+            <p class="experience-date">{item.period}</p>
+          </div>
+          <div class="experience-body">
+            {item.highlights && (
+              <ul class="experience-description">
+                {item.highlights.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            )}
+            {item.topics && (
+              <ul class="tech-labels" aria-label="Subjects">
+                {item.topics.map((topic) => (
+                  <li>{topic}</li>
                 ))}
               </ul>
             )}

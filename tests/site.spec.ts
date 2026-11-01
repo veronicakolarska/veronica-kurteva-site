@@ -72,7 +72,7 @@ test('recent work shows locations, promotions and technology labels', async ({ p
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/');
-    const rows = page.locator('.experience-row');
+    const rows = page.locator('.experience .experience-row');
     await expect(rows).toHaveCount(3);
     await expect(rows.first().locator('.experience-place')).toHaveText('Sofia, Bulgaria · Hybrid');
     await expect(rows.first().locator('.tech-labels li', { hasText: 'Kafka' })).toBeVisible();
