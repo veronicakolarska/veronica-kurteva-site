@@ -491,6 +491,8 @@
   .experience-description {
     margin: 0;
     padding-left: 1.1em;
+    /* Same size as the other paragraphs on the page. */
+    font-size: 1.125rem;
   }
   .experience-description li + li {
     margin-top: 6px;
