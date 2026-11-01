@@ -1,12 +1,13 @@
 ---
 // One drawn arrow, one stroke weight, used wherever a link points somewhere.
 interface Props {
-  direction?: 'right' | 'down' | 'out';
+  direction?: 'right' | 'down' | 'up' | 'out';
 }
 const { direction = 'right' } = Astro.props;
 const paths = {
   right: 'M3 8h10M9 4l4 4-4 4',
   down: 'M8 3v10M4 9l4 4 4-4',
+  up: 'M8 13V3M4 7l4-4 4 4',
   out: 'M4 12 12 4M6 4h6v6',
 };
 ---

@@ -58,6 +58,13 @@ import { cvFileBase } from '../data/cv-filename.mjs';
                     ))}
                   </ul>
                 )}
+                {position.tech && (
+                  <ul class="tech-labels" aria-label="Technologies">
+                    {position.tech.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
             ))}
           </article>

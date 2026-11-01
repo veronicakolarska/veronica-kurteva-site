@@ -6,7 +6,7 @@ Veronica Kurteva’s English-language professional website. Astro generates stat
 
 - `src/data/cv.ts` is the shared source for the CV page and downloads; `src/data/site.ts` contains public identity and contact information.
 - Edit data instead of duplicating CV content in templates. Do not publish a phone number or the original input PDF.
-- Keep all public claims supported by the source notes in `CONTENT.md`. The EGT Digital responsibilities come from the owner's notes recorded there; do not extend them or claim active job-search availability.
+- Keep all public claims supported by the source notes in `CONTENT.md`. Job descriptions and technology labels come from the LinkedIn Experience section recorded there; do not extend them or claim active job-search availability.
 - The design is warm editorial: Lora headings, Source Sans 3 text, ivory, charcoal, terracotta, generous space and restrained dividers. Keep it responsive and useful without JavaScript.
 - The portrait is a real photograph, served locally. Never synthesize or substitute a person’s likeness.
 - Use trailing slashes for page links. The production URL is https://veronicakurteva.com; pushes to `main` deploy via `.github/workflows/deploy.yml`.

@@ -33,12 +33,12 @@ A backend .NET developer with a completed bachelor's in Cognitive Science and Ps
 ## Capabilities and Constraints
 
 - Content source of truth: `src/data/cv.ts` (CV content) and `src/data/site.ts` (identity and contact). Templates must not duplicate CV content.
-- All public claims must be supported by `CONTENT.md`. Do not invent responsibilities for the EGT Digital role, claim seniority, quantified outcomes, clinical qualifications, or active job-search availability.
+- All public claims must be supported by `CONTENT.md`. Job descriptions come from the LinkedIn Experience section; do not invent responsibilities, seniority, quantified outcomes beyond those LinkedIn states, clinical qualifications, or active job-search availability.
 - Never publish a phone number or the original input PDF.
 - The portrait at `public/images/veronica.webp` is a real photograph. Never synthesize or substitute a likeness. The homepage must degrade to a typography-only layout if the portrait is absent.
 - Page links use trailing slashes.
 - Conventional commit messages. The repository must stay independent: no other site's history, assets or content.
-- Terminology: ".NET Developer" is the public role title; "Veronica Kurteva" is the public name (LinkedIn uses Kolarska, chosen deliberately).
+- Terminology: ".NET Developer" is the public role title; "Veronica Kurteva" is the public name, matching LinkedIn (/in/veronica-kurteva/).
 
 ## Brand Commitments
 
@@ -47,10 +47,10 @@ A backend .NET developer with a completed bachelor's in Cognitive Science and Ps
 
 ## Evidence on Hand
 
-- Real CV content in `src/data/cv.ts`: five technical roles (EGT Digital, Accedia, MentorMate, Sensata Technologies, Telepoint), two additional roles (psychologist intern, IT teacher intern), three degrees from New Bulgarian University, three skill groups, five certifications, three interests.
-- Real portrait: `public/images/veronica.webp` (640×800 derivative of the LinkedIn photograph).
+- Real CV content in `src/data/cv.ts`: five technical roles (EGT Digital, Accedia, MentorMate, Sensata Technologies, Telepoint), two additional roles (psychologist intern, IT teacher intern), three degrees from New Bulgarian University, four skill groups, four certifications, three interests.
+- Real portrait: `public/images/veronica.webp` (800×800 derivative of the LinkedIn photograph), plus resized copies `veronica-400.webp` and `veronica-600.webp` that phones and smaller screens load instead. Regenerate the copies if the portrait changes.
 - Provenance notes in `CONTENT.md`.
-- Absent, do not fabricate: testimonials, project case studies, metrics, open-source links, blog posts, availability status, certification expiry dates.
+- Absent, do not fabricate: testimonials, project case studies, metrics other than those on LinkedIn, open-source links, blog posts, availability status, certification expiry dates.
 
 ## Product Principles
 

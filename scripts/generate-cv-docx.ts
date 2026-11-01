@@ -42,6 +42,17 @@ const experience = (items: Experience[]) =>
         spacing: { before: 80, after: 60 },
       }),
       ...position.bullets.map(bullet),
+      ...(position.tech
+        ? [
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Technologies: ', bold: true, color: '555555' }),
+                new TextRun({ text: position.tech.join(', '), color: '555555' }),
+              ],
+              spacing: { before: 40, after: 60 },
+            }),
+          ]
+        : []),
     ]),
   ]);
 const doc = new Document({

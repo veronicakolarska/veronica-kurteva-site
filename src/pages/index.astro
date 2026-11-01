@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import Base from '../layouts/Base.astro';
 import Arrow from '../components/Arrow.astro';
 import { site } from '../data/site';
-import { interests, roles, skills } from '../data/cv';
+import { interests, roles } from '../data/cv';
 import {
   companySpan,
   earlier,
@@ -19,10 +19,10 @@ const hasPortrait = existsSync('public/images/veronica.webp');
 const recentRoles = roles.slice(0, 3).map((role) => ({
   ...role,
   ...companySpan(role),
-  title:
-    role.positions.length > 1
-      ? `${role.positions.at(-1)!.title}, then ${role.positions[0].title}`
-      : role.positions[0].title,
+  // Job titles at this employer, current first, so a promotion stacks above the earlier role.
+  titles: role.positions.map((position) => position.title),
+  // Every technology used at this employer, newest position first, without repeats.
+  tech: [...new Set(role.positions.flatMap((position) => position.tech ?? []))],
 }));
 // Labels near the right edge hang leftwards so they stay inside the column.
 const anchorEnd = (start: number) => start > totalMonths - 28;
@@ -68,6 +68,8 @@ const earlierSentence =
       <figure class="portrait">
         <img
           src="/images/veronica.webp"
+          srcset="/images/veronica-400.webp 400w, /images/veronica-600.webp 600w, /images/veronica.webp 800w"
+          sizes="(min-width: 1200px) 395px, (min-width: 721px) 33vw, 72vw"
           alt="Veronica Kurteva"
           width="640"
           height="800"
@@ -79,22 +81,21 @@ const earlierSentence =
 
   <section class="about-section" aria-labelledby="about-title">
     <div class="wrap section-grid">
-      <h2 id="about-title">
-        I’ve worked on factory floors, in data centres and{' '}
-        <em>with people living with dementia.</em>
-      </h2>
+      <h2 id="about-title">Five years of building and running production .NET services.</h2>
       <div class="prose">
         <p>
           My work has taken me from data centre infrastructure and industrial software to backend
           development with .NET. Along the way, I’ve worked on APIs, database logic and bringing
-          older applications into ASP.NET Core. Today I build backend services for EGT Digital’s
-          gaming platform, owning features from design through to release.
+          older applications into ASP.NET Core. Today I build microservices for player
+          communications and segmentation at EGT Digital.
         </p>
         <p>
-          My curiosity also led me to psychology. After a bachelor’s degree in Cognitive Science and
-          Psychology, I spent eight months as a psychologist intern at a rehabilitation hospital,
-          supporting art therapy sessions. In 2025 I began a master’s in Cognitive Science at New
-          Bulgarian University.
+          I started with a bachelor’s in Computer Science at New Bulgarian University, where I
+          learned programming, algorithms, databases and software engineering. While working as a
+          developer, I went back to NBU for a second bachelor’s, in Cognitive Science and
+          Psychology. I’m now doing a master’s in Cognitive Science there. My research looks at how
+          people judge what AI tools can do and how far to trust them, which matters to me because I
+          use AI coding assistants at work every day.
         </p>
       </div>
     </div>
@@ -102,11 +103,7 @@ const earlierSentence =
 
   <section class="wrap section-space" aria-labelledby="timeline-title">
     <div class="section-heading">
-      <h2 id="timeline-title">
-        Where code and
-        <br />
-        <em>cognition</em> overlap.
-      </h2>
+      <h2 id="timeline-title">My path to backend development.</h2>
       <p class="section-note">
         <span class="swatch swatch-cognition"></span> Terracotta marks the psychology.
       </p>
@@ -122,7 +119,11 @@ const earlierSentence =
             'tl-item',
             `tl-${item.track}`,
             `tl-${item.lane}`,
-            { 'tl-end': anchorEnd(item.start), 'tl-ongoing': item.ongoing },
+            {
+              'tl-end': anchorEnd(item.start),
+              'tl-ongoing': item.ongoing,
+              'tl-clipped': item.clipped,
+            },
           ]}
           style={`--s: ${item.start + 1}; --e: ${item.end + 1}`}
         >
@@ -152,7 +153,11 @@ const earlierSentence =
             'tl-item',
             'tl-study',
             `tl-${item.track}`,
-            { 'tl-end': anchorEnd(item.start), 'tl-ongoing': item.ongoing },
+            {
+              'tl-end': anchorEnd(item.start),
+              'tl-ongoing': item.ongoing,
+              'tl-clipped': item.clipped,
+            },
           ]}
           style={`--s: ${item.start + 1}; --e: ${item.end + 1}`}
         >
@@ -172,14 +177,15 @@ const earlierSentence =
           <span class="tl-label">
             <strong>{item.row === 'work' ? item.org : item.title}</strong>
             <span>{item.row === 'work' ? item.title : item.org}</span>
-            {item.summary && <span class="tl-summary">{item.summary}</span>}
           </span>
         </li>
       ))}
     </ol>
-    <p class="timeline-earlier">
-      Before {firstYear}: {earlierSentence}. The <a href="/cv/">CV</a> has the detail.
-    </p>
+    {earlier.length > 0 && (
+      <p class="timeline-earlier">
+        Before {firstYear}: {earlierSentence}. The <a href="/cv/">CV</a> has the detail.
+      </p>
+    )}
   </section>
 
   <section class="wrap section-space experience" aria-labelledby="experience-title">
@@ -192,38 +198,50 @@ const earlierSentence =
     <div class="experience-list">
       {recentRoles.map((role) => (
         <article class="experience-row">
-          <p class="experience-date">{role.period}</p>
-          <div>
+          <div class="experience-meta">
             <h3>{role.company}</h3>
-            <p class="role-title">{role.title}</p>
+            <p class="role-title">
+              {role.titles.map((title, i) => (
+                <Fragment>
+                  {i > 0 && (
+                    <Fragment>
+                      <Arrow direction="up" />
+                      <span class="sr-only">promoted from</span>
+                    </Fragment>
+                  )}
+                  <span class="role-step">{title}</span>
+                </Fragment>
+              ))}
+            </p>
+            <p class="experience-date">{role.period}</p>
+            <p class="experience-place">{role.location}</p>
           </div>
-          {role.summary && <p class="experience-description">{role.summary}</p>}
+          <div class="experience-body">
+            {role.highlights && (
+              <ul class="experience-description">
+                {role.highlights.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            )}
+            {role.tech.length > 0 && (
+              <ul class="tech-labels" aria-label="Technologies">
+                {role.tech.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
         </article>
       ))}
     </div>
-  </section>
-
-  <section class="wrap section-space expertise" aria-labelledby="skills-title">
-    <h2 id="skills-title">The tools behind the work.</h2>
-    <dl class="skills-grid">
-      {skills.map((group) => (
-        <div class="skill-group">
-          <dt>{group.group}</dt>
-          <dd>{group.items.join(', ')}</dd>
-        </div>
-      ))}
-    </dl>
-    <p class="aside-contact">
-      Want the detail? <a href="/cv/">The CV has it</a>, or{' '}
-      <a href={`mailto:${site.email}`}>email me</a>.
-    </p>
   </section>
 
   <section class="wrap beyond section-grid" aria-labelledby="beyond-title">
     <h2 id="beyond-title">Away from the keyboard.</h2>
     <div>
       <p class="beyond-copy">
-        A mountain trail, somewhere new to explore, or a swing dance floor. There’s plenty to be
+        A mountain trail, somewhere new to explore, or a Lindy hop dance floor. There’s plenty to be
         curious about away from a screen.
       </p>
       <ul class="interests">
@@ -244,10 +262,6 @@ const earlierSentence =
       <a class="contact-email" href={`mailto:${site.email}`}>
         {site.email} <Arrow direction="out" />
       </a>
-      <p class="contact-note">
-        My <a href={site.linkedin}>LinkedIn</a> address still carries my previous surname, Kolarska.
-        Same person.
-      </p>
     </div>
   </section>
 </Base>

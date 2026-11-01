@@ -224,9 +224,6 @@
   .experience {
     padding-top: 0;
   }
-  .expertise {
-    padding-top: 0;
-  }
   .beyond {
     padding-block: 72px 96px;
     align-items: start;
@@ -462,11 +459,6 @@
   .tl-cognition .tl-label strong {
     color: var(--accent);
   }
-  .tl-summary {
-    margin-top: 4px;
-    color: var(--ink-soft);
-    font-size: 0.95rem;
-  }
   .timeline-earlier {
     margin-top: 28px;
     max-width: 62ch;
@@ -474,10 +466,11 @@
     font-size: 1rem;
   }
 
+  /* Two columns: who/when on the left, what on the right, which gets the room. */
   .experience-row {
     display: grid;
-    grid-template-columns: 0.9fr 1.1fr 1.4fr;
-    gap: 32px;
+    grid-template-columns: minmax(220px, 1fr) 2.4fr;
+    gap: 56px;
     padding-block: 28px;
     border-top: 1px solid var(--line);
     align-items: start;
@@ -492,35 +485,60 @@
     font-size: 1rem;
   }
   .experience-date {
-    padding-top: 4px;
+    margin-top: 14px;
+  }
+  .experience-description {
+    margin: 0;
+    padding-left: 1.1em;
+  }
+  .experience-description li + li {
+    margin-top: 6px;
+  }
+  .experience-description li::marker {
+    color: var(--accent);
+  }
+  .experience-place {
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 0.88rem;
   }
   .role-title {
     margin-top: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
   }
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 36px;
-    margin-top: 40px;
+  .role-title .arrow {
+    color: var(--accent);
+    flex: none;
   }
-  .skill-group {
-    border-top: 1px solid var(--line);
-    padding-top: 18px;
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
-  .skill-group dt {
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 8px;
+  .tech-labels {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0;
+    margin: 12px 0 0;
   }
-  .skill-group dd {
+  .tech-labels li,
+  .cv-position .tech-labels li {
+    margin: 0;
+    padding: 2px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--paper-2);
     color: var(--ink-soft);
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-  .aside-contact {
-    margin-top: 48px;
-    color: var(--muted);
-    font-size: 1rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
   }
   .beyond-copy {
     color: var(--ink-soft);
@@ -549,12 +567,6 @@
     font-size: clamp(1.1rem, 2.3vw, 1.65rem);
     margin-top: 24px;
     text-decoration-color: var(--line-strong);
-  }
-  .contact-note {
-    margin: 22px auto 0;
-    max-width: 34rem;
-    font-size: 1rem;
-    color: var(--ink-soft);
   }
   .cv-shell {
     max-width: 1040px;
@@ -908,13 +920,6 @@
     }
   }
 
-  @media (max-width: 999px) {
-    /* The list rows carry the role summaries here, so Recent work would repeat them. */
-    .experience {
-      display: none;
-    }
-  }
-
   @media (max-width: 1050px) {
     .wrap {
       width: calc(100% - 64px);
@@ -930,12 +935,8 @@
       gap: 44px;
     }
     .experience-row {
-      grid-template-columns: 0.9fr 1fr 1.2fr;
-      gap: 22px;
-    }
-    .skills-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px 24px;
+      grid-template-columns: minmax(190px, 1fr) 2fr;
+      gap: 32px;
     }
     .cv-section {
       grid-template-columns: 165px 1fr;
@@ -1006,8 +1007,7 @@
     .contact-inner {
       padding-block: 56px;
     }
-    .experience,
-    .expertise {
+    .experience {
       padding-top: 0;
     }
     .section-heading {
@@ -1027,31 +1027,17 @@
     }
     .experience-row {
       grid-template-columns: 1fr;
-      gap: 8px;
+      gap: 14px;
       padding-block: 22px;
     }
     .experience-date {
       font-size: 0.88rem;
-    }
-    .experience-description {
-      max-width: 40ch;
-    }
-    .skills-grid {
-      grid-template-columns: 1fr;
-      gap: 24px;
-      margin-top: 28px;
-    }
-    .aside-contact {
-      margin-top: 36px;
     }
     .interests {
       gap: 8px 18px;
     }
     .contact-inner {
       text-align: left;
-    }
-    .contact-note {
-      margin-inline: 0;
     }
     .site-footer {
       font-size: 0.9rem;
@@ -1113,7 +1099,6 @@
     .skip-link,
     .cv-topline,
     .portrait,
-    .aside-contact,
     .section-note {
       display: none !important;
     }
@@ -1151,8 +1136,7 @@
       margin-bottom: 8pt;
     }
     .tl-row,
-    .experience-row,
-    .skill-group {
+    .experience-row {
       break-inside: avoid;
     }
     a {

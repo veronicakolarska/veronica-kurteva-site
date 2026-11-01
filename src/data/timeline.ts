@@ -14,8 +14,6 @@ export interface TimelineItem extends Span {
   title: string;
   org: string;
   period: string;
-  /** One-line homepage summary, when the sources give one. */
-  summary?: string;
   track: 'code' | 'cognition';
   row: 'work' | 'study';
 }
@@ -25,7 +23,7 @@ const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', '
 // The present is fixed at build time so the rendered page and its tests agree.
 const now = new Date();
 /** The chart starts here; anything that ended earlier is summarised in a line beneath it. */
-export const firstYear = 2020;
+export const firstYear = 2017;
 export const lastYear = now.getFullYear();
 export const totalMonths = (lastYear - firstYear + 1) * 12;
 export const presentMonth = (lastYear - firstYear) * 12 + now.getMonth() + 1;
@@ -84,7 +82,6 @@ const work: TimelineItem[] = [...roles, ...additionalExperience].map((role) => {
     ...span,
     title: current.title,
     org: role.company,
-    summary: role.summary,
     track: psychology.test(current.title) ? 'cognition' : 'code',
     row: 'work',
   };

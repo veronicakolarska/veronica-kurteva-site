@@ -30,7 +30,7 @@ test('keyboard navigation, current-page state and contact links', async ({ page 
   );
   await expect(page.locator('.cv-contact a').last()).toHaveAttribute(
     'href',
-    'https://www.linkedin.com/in/veronica-kolarska/',
+    'https://www.linkedin.com/in/veronica-kurteva/',
   );
 });
 
@@ -54,8 +54,9 @@ test('the homepage timeline is built from the CV data', async ({ page }) => {
   await page.goto('/');
   const grid = page.locator('.timeline');
   await expect(grid).toBeVisible();
-  await expect(grid.locator('.tl-item')).toHaveCount(7);
-  await expect(page.locator('.timeline-earlier')).toContainText('Telepoint');
+  await expect(grid.locator('.tl-item')).toHaveCount(10);
+  await expect(grid.getByText('Bachelor’s degree, Computer Science')).toBeVisible();
+  await expect(grid.getByText('Telepoint')).toBeVisible();
   await expect(grid.getByText('EGT Digital')).toBeVisible();
   await expect(grid.getByText('Master’s degree, Cognitive Science')).toBeVisible();
   await expect(page.locator('.timeline-list')).toBeHidden();
@@ -65,6 +66,23 @@ test('the homepage timeline is built from the CV data', async ({ page }) => {
   await expect(list).toBeVisible();
   await expect(list.locator('.tl-row').first()).toContainText('Oct 2025 - Present');
   await expect(page.getByText('Working as a .NET developer.')).toHaveCount(0);
+});
+
+test('recent work shows locations, promotions and technology labels', async ({ page }) => {
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    const rows = page.locator('.experience-row');
+    await expect(rows).toHaveCount(3);
+    await expect(rows.first().locator('.experience-place')).toHaveText('Sofia, Bulgaria · Hybrid');
+    await expect(rows.first().locator('.tech-labels li', { hasText: 'Kafka' })).toBeVisible();
+    await expect(rows.nth(2).locator('.role-step')).toHaveText([
+      'Software Developer',
+      'Junior Software Developer',
+    ]);
+  }
+  await page.goto('/cv/');
+  await expect(page.locator('.cv-position .tech-labels').first()).toContainText('PostgreSQL');
 });
 
 test('downloads are real files and the CV print layout is complete', async ({ page, request }) => {
